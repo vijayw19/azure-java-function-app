@@ -26,7 +26,10 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean package'
 
-
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y maven
+  displayName: 'Install Maven'
 
 - task: PublishCodeCoverageResults@1
   inputs:
@@ -39,72 +42,8 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     testRunTitle: 'Java Tests'
 
-- task:  PublishPipelineArtifact@1
+- task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(System.DefaultWorkingDirectory)/target'
     artifact: 'drop'
     publishLocation: 'pipeline'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Maven
-# # Build your Java project and run tests with Apache Maven.
-# # Add steps that analyze code, save build artifacts, deploy, and more:
-# # https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
-# # trigger:
-# # - main
-
-# # pool:
-#   # vmImage: ubuntu-latest
-
-# # steps:
-# # - task: Maven@3
-#   # inputs:
-#     # mavenPomFile: 'pom.xml'
-#     # mavenOptions: '-Xmx3072m'
-#     # javaHomeOption: 'JDKVersion'
-#     # jdkVersionOption: '1.8'
-#     # jdkArchitectureOption: 'x64'
-#     # publishJUnitResults: true
-#     # testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#     # goals: 'package'
-
-
-# trigger:
-#   branches:
-#     include:
-#       - main
-
-# pool:
-#   vmImage: 'ubuntu-latest'
-
-# resources:
-#   repositories:
-#     - repository: templates
-#       type: github
-#       name: vijayw19/common-templates-azure
-#       endpoint: vijayw19
-#       ref: main  # Or specify the branch or tag as needed
-
-# jobs:
-# - template: azure-app-java-build.yml@templates
-  
-
-# # Add more template references for each module as needed
