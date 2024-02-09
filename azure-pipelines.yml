@@ -1,45 +1,108 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
-# trigger:
-# - main
-
-# pool:
-  # vmImage: ubuntu-latest
-
-# steps:
-# - task: Maven@3
-  # inputs:
-    # mavenPomFile: 'pom.xml'
-    # mavenOptions: '-Xmx3072m'
-    # javaHomeOption: 'JDKVersion'
-    # jdkVersionOption: '1.8'
-    # jdkArchitectureOption: 'x64'
-    # publishJUnitResults: true
-    # testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    # goals: 'package'
-
+name: $(Build.DefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
 
 trigger:
-  branches:
-    include:
-      - main
+- master
+
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: vijayw19/common-templates-azure
-      endpoint: vijayw19
-      ref: main  # Or specify the branch or tag as needed
+variables:
+  JAVA_HOME: '/usr/lib/jvm/zulu-8-azure-amd64'
+  MAVEN_HOME: '/usr/share/maven'
+  MAVEN_OPTS: '-Xmx3072m'
+  PATH: '/usr/share/maven/bin:/usr/lib/jvm/zulu-8-azure-amd64/bin:/usr/local/bin:/usr/bin:/bin'
 
-jobs:
-- template: azure-app-java-build.yml@templates
+steps:
+- task: Maven@4
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: 'default'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'clean package'
+
+- task: PublishCodePublishCodeCoverageResults@1 
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    testRunTitle: 'Java Tests'
+
+- task:  PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/target'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # Maven
+# # Build your Java project and run tests with Apache Maven.
+# # Add steps that analyze code, save build artifacts, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+# # trigger:
+# # - main
+
+# # pool:
+#   # vmImage: ubuntu-latest
+
+# # steps:
+# # - task: Maven@3
+#   # inputs:
+#     # mavenPomFile: 'pom.xml'
+#     # mavenOptions: '-Xmx3072m'
+#     # javaHomeOption: 'JDKVersion'
+#     # jdkVersionOption: '1.8'
+#     # jdkArchitectureOption: 'x64'
+#     # publishJUnitResults: true
+#     # testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#     # goals: 'package'
+
+
+# trigger:
+#   branches:
+#     include:
+#       - main
+
+# pool:
+#   vmImage: 'ubuntu-latest'
+
+# resources:
+#   repositories:
+#     - repository: templates
+#       type: github
+#       name: vijayw19/common-templates-azure
+#       endpoint: vijayw19
+#       ref: main  # Or specify the branch or tag as needed
+
+# jobs:
+# - template: azure-app-java-build.yml@templates
   
 
-# Add more template references for each module as needed
+# # Add more template references for each module as needed
