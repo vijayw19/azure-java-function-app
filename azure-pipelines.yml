@@ -15,6 +15,10 @@ variables:
   PATH: '/usr/share/maven/bin:/usr/lib/jvm/zulu-8-azure-amd64/bin:/usr/local/bin:/usr/bin:/bin'
 
 steps:
+- script: |
+    export JAVA_HOME='/usr/lib/jvm/zulu-8-azure-amd64'
+  displayName: 'Set JAVA_HOME'
+
 - task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
