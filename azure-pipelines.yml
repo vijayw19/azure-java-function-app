@@ -1,7 +1,7 @@
 name: $(Build.DefinitionName)_$(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
 
 trigger:
-- master
+- main
 
 pr: none
 
