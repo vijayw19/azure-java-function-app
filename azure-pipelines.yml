@@ -38,7 +38,7 @@ resources:
       ref: main  # Or specify the branch or tag as needed
 
 jobs:
-- template: azure-app-java-build.yml
+- template: azure-app-java-build.yml@templates
   #parameters:
     #moduleName: 'module1'
 
