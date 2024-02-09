@@ -15,6 +15,16 @@ variables:
   PATH: '/usr/share/maven/bin:/usr/lib/jvm/zulu-8-azure-amd64/bin:/usr/local/bin:/usr/bin:/bin'
 
 steps:
+
+
+
+
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
 - script: |
     export JAVA_HOME='/usr/lib/jvm/zulu-8-azure-amd64'
   displayName: 'Set JAVA_HOME'
