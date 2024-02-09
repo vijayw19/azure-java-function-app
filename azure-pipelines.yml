@@ -39,7 +39,8 @@ resources:
 
 jobs:
 - template: azure-app-java-build.yml@templates
-  #parameters:
-    #moduleName: 'module1'
+  parameters:
+    endpoint: 'azure-devops-dev'
+  
 
 # Add more template references for each module as needed
