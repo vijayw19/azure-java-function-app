@@ -56,8 +56,7 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     testRunTitle: 'Java Tests'
 
-- task: PublishPipelineArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/target'
-    artifact: 'drop'
-    publishLocation: 'pipeline'
+    pathtoPublish: '$(System.DefaultWorkingDirectory)/target'
+    artifactName: 'HelloWorld-VJ'
